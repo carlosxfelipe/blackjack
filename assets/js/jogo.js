@@ -1,9 +1,20 @@
 // clubs diamonds hearts and spades
-
 let deck = [];
 const tipos = ["C", "D", "H", "S"];
 const especiais = ["A", "J", "Q", "K"];
 
+let pontosJogador = 0,
+  pontosComputador = 0;
+
+// Referência HTML
+const btnPedir = document.querySelector("#btnPedir");
+const btnParar = document.querySelector("#btnParar");
+
+const divCartasJogador = document.querySelector("#jogador-cartas");
+const divCartasComputador = document.querySelector("#computador-cartas");
+const pontosHTML = document.querySelectorAll("small");
+
+// Jogador
 const criarDeck = () => {
   for (let i = 2; i <= 10; i++) {
     for (let tipo of tipos) {
@@ -28,18 +39,61 @@ const pedirCarta = () => {
   }
 
   const carta = deck.pop();
-
-  console.log(deck);
-  console.log(carta);
   return carta;
 };
-
-// pedirCarta();
 
 const valorCarta = (carta) => {
   const valor = carta.substring(0, carta.length - 1);
   return isNaN(valor) ? (valor === "A" ? 11 : 10) : valor * 1;
 };
 
-const valor = valorCarta(pedirCarta());
-console.log({ valor });
+// Computador
+const turnoComputador = (pontosMinimos) => {
+  do {
+    const carta = pedirCarta();
+
+    pontosComputador = pontosComputador + valorCarta(carta);
+    pontosHTML[1].innerText = pontosComputador;
+
+    const imgCarta = document.createElement("img");
+    imgCarta.src = `assets/cartas/${carta}.png`;
+    imgCarta.classList.add("carta");
+    divCartasComputador.append(imgCarta);
+
+    if (pontosMinimos > 21) {
+      break;
+    }
+  } while (pontosComputador < pontosMinimos && pontosMinimos <= 21);
+};
+
+// Eventos
+btnPedir.addEventListener("click", () => {
+  const carta = pedirCarta();
+
+  pontosJogador = pontosJogador + valorCarta(carta);
+  pontosHTML[0].innerText = pontosJogador;
+
+  const imgCarta = document.createElement("img");
+  imgCarta.src = `assets/cartas/${carta}.png`;
+  imgCarta.classList.add("carta");
+  divCartasJogador.append(imgCarta);
+
+  if (pontosJogador > 21) {
+    console.log("Você perdeu!");
+    btnPedir.disabled = true;
+    btnParar.disabled = true;
+    turnoComputador(pontosJogador);
+  } else if (pontosJogador === 21) {
+    console.log("Você ganhou!");
+    btnPedir.disabled = true;
+    btnParar.disabled = true;
+    turnoComputador(pontosJogador);
+  }
+});
+
+btnParar.addEventListener("click", () => {
+  btnPedir.disabled = true;
+  btnParar.disabled = true;
+
+  turnoComputador(pontosJogador);
+});
