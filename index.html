@@ -19,15 +19,15 @@
     <div class="row mt-2">
       <div class="col text-center">
         <button id="btnNovo" class="btn btn-danger">Novo jogo</button>
-        <button id="btnPedir" class="btn btn-primary">Pedir cartas</button>
-        <button id="btnParar" class="btn btn-primary">Parar</button>
+        <button id="btnPedir" disabled="disabled" class="btn btn-primary">Pedir cartas</button>
+        <button id="btnParar" disabled="disabled" class="btn btn-primary">Parar</button>
       </div>
     </div>
 
     <div class="row container">
       <div class="col">
         <h1>Jogador 1 - <small>0</small></h1>
-        <div id="jogador-cartas">
+        <div class="divCartas" id="jogador-cartas">
           <!-- <img class="carta" src="assets/cartas/10C.png"> -->
         </div>
     </div>
@@ -35,11 +35,17 @@
     <div class="row container mt-2">
       <div class="col">
         <h1>Computador - <small>0</small></h1>
-        <div id="computador-cartas">
+        <div class="divCartas" id="computador-cartas">
           <!-- <img class="carta" src="assets/cartas/3C.png"> -->
         </div>
     </div>
     <script src="assets/js/underscore.js"></script>
     <script src="assets/js/jogo.js"></script>
+    <script>
+      console.log(moduloBlackjack)
+      document.querySelector('#btnNovo').addEventListener('click', () => {
+        moduloBlackjack.novoJogo();
+      });
+    </script>
   </body>
 </html>
